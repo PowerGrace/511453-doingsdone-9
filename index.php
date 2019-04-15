@@ -110,10 +110,9 @@ $tasks = [
                         </label>
                     </div>
 
-
                     <?php foreach ($tasks as $val): ?>
                     <table class="tasks">
-                        <?php if(!($val['done']) || (($val['done']) && $show_complete_tasks)): ?>
+                        <?php if(isset($val['done']) && (!$val['done'] || ($val['done'] && $show_complete_tasks))): ?>
                         <tr class="tasks__item task <?php if ($val['done']): ?> task--completed <?php endif; ?>">
                             <td class=" task__select">
                                 <label class="checkbox task__checkbox">
@@ -128,8 +127,9 @@ $tasks = [
                             <td class="task__file">
                                 <a class="download-link" href="#">Home.psd</a>
                             </td>
-                            <?php if (isset($val['execution_date'])): ?>
-                            <td class="task__date"><?= strip_tags($val['execution_date']); ?>
+                            <td class="task__date">
+                                <?php if (isset($val['execution_date'])): ?>
+                                <?= strip_tags($val['execution_date']); ?>
                                 <?php endif; ?>
                             </td>
                         </tr>
