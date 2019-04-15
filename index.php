@@ -6,27 +6,27 @@ $tasks = [
     ['purpose' => 'Собеседование в IT компании',
      'execution_date' => '01.12.2018',
      'category' => 'Работа',
-     'done' => 'Нет'],
+     'done' => false],
     ['purpose' => 'Выполнить тестовое задание',
     'execution_date' => '25.12.2018',
     'category' => 'Работа',
-    'done' => 'Нет'],
+    'done' => false],
     ['purpose' => 'Сделать задание первого раздела',
     'execution_date' => '21.12.2018',
     'category' => 'Учёба',
-    'done' => 'Да'],
+    'done' => true],
     ['purpose' => 'Встреча с другом',
     'execution_date' => '22.12.2018',
     'category' => 'Входящие',
-    'done' => 'Нет'],
+    'done' => false],
     ['purpose' => 'Купить корм для кота',
-    'execution_date' => 'Нет',
+    'execution_date' => null,
     'category' => 'Домашние дела',
-    'done' => 'Нет'],
+    'done' => false],
     ['purpose' => 'Заказать пиццу',
-    'execution_date' => 'Нет',
+    'execution_date' => null,
     'category' => 'Домашние дела',
-    'done' => 'Нет']
+    'done' => false]
 ]
 ?>
 <!DOCTYPE html>
@@ -71,9 +71,9 @@ $tasks = [
                     <nav class="main-navigation">
                         <ul class="main-navigation__list">
                             <?php 
-                            foreach ($projects as $key => $val) : ?>
+                            foreach ($projects as $val) : ?>
                             <li class="main-navigation__list-item">
-                                <a class="main-navigation__list-item-link" href="#"><?= $val ?></a>
+                                <a class="main-navigation__list-item-link" href="#"><?= strip_tags($val) ?></a>
                                 <span class="main-navigation__list-item-count">0</span>
                             </li>
                             <?php endforeach; ?>
@@ -110,39 +110,33 @@ $tasks = [
                         </label>
                     </div>
 
+
+                    <?php foreach ($tasks as $val): ?>
                     <table class="tasks">
-                        <?php foreach ($tasks as $key => $val): ?>
-                        <tr class="tasks__item task" <?php if ( $val['done'] === 'Да'): ?> task--completed
-                            <?php if($show_complete_tasks === 0): ?> visually-hidden <?php endif; ?> <?php endif; ?>>
-                            <td class="task__select">
+                        <?php if(!($val['done']) || (($val['done']) && $show_complete_tasks)): ?>
+                        <tr class="tasks__item task <?php if ($val['done']): ?> task--completed <?php endif; ?>">
+                            <td class=" task__select">
                                 <label class="checkbox task__checkbox">
                                     <input class="checkbox__input visually-hidden task__checkbox" type="checkbox"
-                                        value="1">
-                                    <span class="checkbox__text"><?= $val['purpose']; ?></span>
+                                        value="1" <?php if($val['done']): ?> checked <?php endif; ?>>
+                                    <?php if (isset($val['purpose'])) : ?>
+                                    <span class="checkbox__text"><?= strip_tags($val['purpose']); ?></span>
+                                    <?php endif; ?>
                                 </label>
                             </td>
 
                             <td class="task__file">
                                 <a class="download-link" href="#">Home.psd</a>
                             </td>
-
-                            <td class="task__date"><?= $val['execution_date']; ?></td>
-                            <?php endforeach; ?>
-                        </tr>
-                        <?php if ($show_complete_tasks === 1): ?>
-                        <tr class="tasks__item task task--completed">
-                            <td class="task__select">
-                                <label class="checkbox task__checkbox">
-                                    <input class="checkbox__input visually-hidden" type="checkbox" checked>
-                                    <span class="checkbox__text">Записаться на интенсив "Базовый PHP"</span>
-                                </label>
+                            <?php if (isset($val['execution_date'])): ?>
+                            <td class="task__date"><?= strip_tags($val['execution_date']); ?>
+                                <?php endif; ?>
                             </td>
-                            <td class="task__date">10.10.2019</td>
-                            <td class="task__controls"></td>
                         </tr>
-                        <?php endif ;?>
-                        <!--показывать следующий тег <tr/>, если переменная $show_complete_tasks равна единице-->
+                        <?php endif; ?>
                     </table>
+                    <?php endforeach; ?>
+
                 </main>
             </div>
         </div>
