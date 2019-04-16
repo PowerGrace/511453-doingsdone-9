@@ -28,14 +28,14 @@ $tasks = [
     'category' => 'Домашние дела',
     'done' => false]
 ];
-function numberOftacks ($tasksList, $projectName) {
+function numberOfTasks ($tasksList, $projectName) {
     $quantity = 0;
     foreach ($tasksList as $val) {
-        if($val['category'] === $projectName){
+        if(isset($val['category']) && $val['category'] === $projectName) {
             $quantity++;
         }
     }
-return $quantity; 
+    return $quantity; 
 }
 ?>
 <!DOCTYPE html>
@@ -84,7 +84,7 @@ return $quantity;
                             <li class="main-navigation__list-item">
                                 <a class="main-navigation__list-item-link" href="#"><?= strip_tags($val); ?></a>
                                 <span class="main-navigation__list-item-count">
-                                    <?= numberOftacks($tasks, $val); ?></span>
+                                    <?= numberOfTasks($tasks, $val); ?></span>
                             </li>
                             <?php endforeach; ?>
                         </ul>
