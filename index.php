@@ -36,11 +36,11 @@ function numberOfTasks ($tasksList, $projectName) {
     }
     return $quantity; 
 };
-$contentOfPage = include_template ('index.php', [
+$contentOfPage = include_template ('templates\index.php', [
     'tasks' => $tasks,
     'show_complete_tasks' => $show_complete_tasks
     ]);
-$contentLayout = include_template ('layout.php', [
+$contentLayout = include_template ('templates\layout.php', [
     'contentOfPage' => $contentOfPage, 
     'projects' => $projects,
     'userName' => 'Светлана Быстрова',
