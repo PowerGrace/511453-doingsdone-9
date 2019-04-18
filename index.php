@@ -1,4 +1,6 @@
 <?php
+require_once "./helpers.php";
+
 $show_complete_tasks = rand(0, 1);
 $projects = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
 $tasks = [
@@ -27,6 +29,7 @@ $tasks = [
     'category' => 'Домашние дела',
     'done' => false]
 ];
+
 function numberOfTasks ($tasksList, $projectName) {
     $quantity = 0;
     foreach ($tasksList as $val) {
@@ -36,13 +39,13 @@ function numberOfTasks ($tasksList, $projectName) {
     }
     return $quantity; 
 };
-$contentOfPage = include_template ('templates\index.php', [
-    'tasks' => $tasks,
-    'show_complete_tasks' => $show_complete_tasks
+
+$contentOfPage = include_template ('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks
     ]);
-$contentLayout = include_template ('templates\layout.php', [
+$contentLayout = include_template ('layout.php', [
     'contentOfPage' => $contentOfPage, 
     'projects' => $projects,
+    'tasks' => $tasks,
     'userName' => 'Светлана Быстрова',
     'pageName' => 'Дела в порядке']);
 print($contentLayout);
