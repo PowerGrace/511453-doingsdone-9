@@ -1,5 +1,5 @@
 <?php
-require_once "./helpers.php";
+require_once ('helpers.php');
 
 $show_complete_tasks = rand(0, 1);
 $projects = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
@@ -47,7 +47,16 @@ $contentLayout = include_template ('layout.php', [
     'projects' => $projects,
     'tasks' => $tasks,
     'userName' => 'Светлана Быстрова',
-    'pageName' => 'Дела в порядке']);
+    'pageName' => 'Дела в Порядке']);
 print($contentLayout);
+
+function coutingTime ($val) {
+    if ($val) {
+        $finHour = strtotime($val);
+        $hoursCount = $finHour - time();
+        
+        return $hoursCount;  
+    }
+};
 
 ?>
