@@ -22,9 +22,10 @@
 </div>
 
 <?php foreach ($tasks as $val): ?>
-<table class="tasks">
-    <?php if(isset($val['done']) && (!$val['done'] || ($val['done'] && $show_complete_tasks))): ?>
-    <tr class="tasks__item task <?php if ($val['done']): ?> task--completed <?php endif; ?>">
+<table class="tasks"><?php if(isset($val['done']) && (!$val['done'] || ($val['done'] && $show_complete_tasks))): ?>
+    <tr class="tasks__item task 
+    <?php if ($val['done']) { echo 'task--completed';}
+    elseif (isDateImportant ($val['execution_date'])) {echo'task--important';} ?>">
         <td class=" task__select">
             <label class="checkbox task__checkbox">
                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1"

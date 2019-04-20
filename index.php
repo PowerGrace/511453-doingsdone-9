@@ -1,11 +1,11 @@
 <?php
-require_once "./helpers.php";
+require_once ('helpers.php');
 
 $show_complete_tasks = rand(0, 1);
 $projects = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
 $tasks = [
     ['purpose' => 'Собеседование в IT компании',
-     'execution_date' => '01.12.2018',
+     'execution_date' => '01.12.2019',
      'category' => 'Работа',
      'done' => false],
     ['purpose' => 'Выполнить тестовое задание',
@@ -47,7 +47,16 @@ $contentLayout = include_template ('layout.php', [
     'projects' => $projects,
     'tasks' => $tasks,
     'userName' => 'Светлана Быстрова',
-    'pageName' => 'Дела в порядке']);
+    'pageName' => 'Дела в Порядке']);
 print($contentLayout);
+
+function isDateImportant ($val) {
+    $finHour = strtotime($val);
+    $hoursCount = $finHour - time();
+        if ($hoursCount <= 86400 && $val !== null) {
+            return true;
+        }
+    return false;
+};
 
 ?>
