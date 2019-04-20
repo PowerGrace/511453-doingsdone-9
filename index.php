@@ -50,11 +50,9 @@ $contentLayout = include_template ('layout.php', [
     'pageName' => 'Дела в Порядке']);
 print($contentLayout);
 
-function isCoutingTime ($val) {
-    
-        $finHour = strtotime($val);
-        $hoursCount = $finHour - time();
-    
+function isDateImportant ($val) {
+    $finHour = strtotime($val);
+    $hoursCount = $finHour - time();
         if ($hoursCount <= 86400 && $val !== null) {
             return true;
         }
