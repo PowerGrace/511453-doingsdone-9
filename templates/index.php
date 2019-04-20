@@ -24,7 +24,8 @@
 <?php foreach ($tasks as $val): ?>
 <table class="tasks"><?php if(isset($val['done']) && (!$val['done'] || ($val['done'] && $show_complete_tasks))): ?>
     <tr class="tasks__item task 
-        <?php if ($val['done']): print 'task--completed'; else: coutingTime ($val['execution_date']); endif; ?>">
+        <?php if ($val['done']): echo'task--completed';
+         elseif (isCoutingTime ($val['execution_date'])): echo'task--important'; endif; ?>">
         <td class=" task__select">
             <label class="checkbox task__checkbox">
                 <input class="checkbox__input visually-hidden task__checkbox" type="checkbox" value="1"
