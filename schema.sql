@@ -6,7 +6,7 @@ USE doingsdone;
 
 CREATE TABLE projects (
 id_name INT AUTO_INCREMENT PRIMARY KEY, 
-name CHAR(64) NOT NULL,
+title CHAR(64) NOT NULL,
 id_user INT NOT NULL
 );
 
@@ -24,9 +24,9 @@ dt_creat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
 status BOOL DEFAULT FALSE,
 name TEXT NOT NULL,
 file CHAR(128) UNIQUE,
-deadline DATETIME NULL,
+deadline DATE NULL,
 id_name INT NOT NULL,
-id_user INT
+id_user INT NOT NULL
 );
 
 
