@@ -3,35 +3,6 @@ require_once ('helpers.php');
 
 $show_complete_tasks = rand(0, 1);
 
-//$projects = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
-
-/*$tasks = [
-    ['purpose' => 'Собеседование в IT компании',
-     'execution_date' => '01.12.2019',
-     'category' => 'Работа',
-     'done' => false],
-    ['purpose' => 'Выполнить тестовое задание',
-    'execution_date' => '25.12.2018',
-    'category' => 'Работа',
-    'done' => false],
-    ['purpose' => 'Сделать задание первого раздела',
-    'execution_date' => '21.12.2018',
-    'category' => 'Учёба',
-    'done' => true],
-    ['purpose' => 'Встреча с другом',
-    'execution_date' => '22.12.2018',
-    'category' => 'Входящие',
-    'done' => false],
-    ['purpose' => 'Купить корм для кота',
-    'execution_date' => null,
-    'category' => 'Домашние дела',
-    'done' => false],
-    ['purpose' => 'Заказать пиццу',
-    'execution_date' => null,
-    'category' => 'Домашние дела',
-    'done' => false]
-];*/
-
 // подключение к БД
 
 $link = mysqli_connect ('localhost', 'root', '', 'doingsdone');
@@ -40,27 +11,26 @@ $link = mysqli_connect ('localhost', 'root', '', 'doingsdone');
 
 mysqli_set_charset($link, 'utf8');
 
+$projects = [];
+$tasks = [];
+
 // проверка подключения
 
-if ($link == false) {
-    print ('Ошибка подключения:' . mysqli_connect_error());
+if ($link === false) {
+    die ('Ошибка подключения:' . mysqli_connect_error());
 } else {
     // запрос на получение списка проектов для пользователя id = 2
     $sql_projects = "SELECT title AS category 
-    FROM projects 
-    JOIN users 
-    ON projects.id_user = users.id_user
-     WHERE projects.id_user = 2";
+    FROM projects  
+    WHERE projects.id_user = 2";
 
     // запрос на получение списка задач для пользователя id = 2
 
-    $sql_tasks = "SELECT name AS purpose, deadline AS execution_date, status AS done, title AS category
+    $sql_tasks = "SELECT name AS purpose, deadline AS execution_date, status AS done, title AS category, file
     FROM tasks 
-    JOIN users 
-    ON tasks.id_user = users.id_user 
     JOIN projects
     ON projects.id_name = tasks.id_name
-    WHERE users.id_user = 2";
+    WHERE projects.id_user = 2";
 
     //получение ресурса результата
 
@@ -70,20 +40,14 @@ if ($link == false) {
 
     //проверка запросов
 
-    if ($res_projects) {
-        $projects = mysqli_fetch_all($res_projects, MYSQLI_ASSOC);
-    } else {
-        $error_query = mysqli_error($link);
-        echo ($error_query);
+    if ($res_projects === false && $res_tasks === false) {
+        die ('Ошибка при выполнении SQL запроса: ' . mysqli_error($link));
     }
-
+        
+    $projects = mysqli_fetch_all($res_projects, MYSQLI_ASSOC);
     
-    if ($res_tasks) {
-        $tasks = mysqli_fetch_all($res_tasks, MYSQLI_ASSOC);
-    } else {
-        $error_query = mysqli_error($link);
-        echo ($error_query);
-    }
+    $tasks = mysqli_fetch_all($res_tasks, MYSQLI_ASSOC);
+    
 
 };
 
