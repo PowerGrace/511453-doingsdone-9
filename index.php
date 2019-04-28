@@ -2,38 +2,59 @@
 require_once ('helpers.php');
 
 $show_complete_tasks = rand(0, 1);
-$projects = ['Входящие', 'Учеба', 'Работа', 'Домашние дела', 'Авто'];
-$tasks = [
-    ['purpose' => 'Собеседование в IT компании',
-     'execution_date' => '01.12.2019',
-     'category' => 'Работа',
-     'done' => false],
-    ['purpose' => 'Выполнить тестовое задание',
-    'execution_date' => '25.12.2018',
-    'category' => 'Работа',
-    'done' => false],
-    ['purpose' => 'Сделать задание первого раздела',
-    'execution_date' => '21.12.2018',
-    'category' => 'Учёба',
-    'done' => true],
-    ['purpose' => 'Встреча с другом',
-    'execution_date' => '22.12.2018',
-    'category' => 'Входящие',
-    'done' => false],
-    ['purpose' => 'Купить корм для кота',
-    'execution_date' => null,
-    'category' => 'Домашние дела',
-    'done' => false],
-    ['purpose' => 'Заказать пиццу',
-    'execution_date' => null,
-    'category' => 'Домашние дела',
-    'done' => false]
-];
+
+// подключение к БД
+
+$link = mysqli_connect ('localhost', 'root', '', 'doingsdone');
+
+// кодировка
+
+mysqli_set_charset($link, 'utf8');
+
+$projects = [];
+$tasks = [];
+
+// проверка подключения
+
+if ($link === false) {
+    die ('Ошибка подключения:' . mysqli_connect_error());
+} else {
+    // запрос на получение списка проектов для пользователя id = 2
+    $sql_projects = "SELECT title AS category 
+    FROM projects  
+    WHERE projects.id_user = 2";
+
+    // запрос на получение списка задач для пользователя id = 2
+
+    $sql_tasks = "SELECT name AS purpose, deadline AS execution_date, status AS done, title AS category, file
+    FROM tasks 
+    JOIN projects
+    ON projects.id_name = tasks.id_name
+    WHERE projects.id_user = 2";
+
+    //получение ресурса результата
+
+    $res_projects = mysqli_query($link, $sql_projects);
+
+    $res_tasks = mysqli_query($link, $sql_tasks);
+
+    //проверка запросов
+
+    if ($res_projects === false && $res_tasks === false) {
+        die ('Ошибка при выполнении SQL запроса: ' . mysqli_error($link));
+    }
+        
+    $projects = mysqli_fetch_all($res_projects, MYSQLI_ASSOC);
+    
+    $tasks = mysqli_fetch_all($res_tasks, MYSQLI_ASSOC);
+    
+
+};
 
 function numberOfTasks ($tasksList, $projectName) {
     $quantity = 0;
     foreach ($tasksList as $val) {
-        if(isset($val['category']) && $val['category'] === $projectName) {
+        if (isset($val['category']) && ($val['category']) === $projectName) {
             $quantity++;
         }
     }
