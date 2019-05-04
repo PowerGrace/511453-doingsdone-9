@@ -41,10 +41,12 @@
                         <ul class="main-navigation__list">
                             <?php 
                             foreach ($projects as $val) : ?>
-                            <li class="main-navigation__list-item">
+                            <li class="main-navigation__list-item <?php
+                            if(isset($_GET['id_name']) && $_GET['id_name'] == $val['id_name']): ?>
+                                main-navigation__list-item--active <?php endif ?>">
                                 <a class="main-navigation__list-item-link"
-                                    href="#"><?= strip_tags($val['category'] ?? ''); ?></a>
-                                <span class="main-navigation__list-item-count">
+                                    href='<?= strip_tags($url); ?>'><?= strip_tags($val['category'] ?? ''); ?></a>
+                                <span class=" main-navigation__list-item-count">
                                     <?= strip_tags(numberOfTasks($tasks, $val['category'] ?? '')); ?></span>
                             </li>
                             <?php endforeach; ?>
