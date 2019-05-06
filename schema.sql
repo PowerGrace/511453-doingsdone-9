@@ -29,5 +29,7 @@ id_name INT NOT NULL,
 id_user INT NOT NULL
 );
 
-
+CREATE INDEX id_name ON tasks(id_name);
+CREATE INDEX id_user ON tasks(id_user);
+CREATE INDEX id_user ON projects(id_user);
 
