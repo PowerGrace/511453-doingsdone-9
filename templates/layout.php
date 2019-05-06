@@ -46,8 +46,8 @@
                                 main-navigation__list-item--active <?php endif ?>">
                                 <a class="main-navigation__list-item-link"
                                     href="/index.php?id_name=<?= $val['id_name'] ?>"><?= strip_tags($val['category'] ?? ''); ?></a>
-                                <span class=" main-navigation__list-item-count">
-                                    <?= strip_tags(numberOfTasks($tasks, $val['category'] ?? '')); ?></span>
+                                <span class=" main-navigation__list-item-count"><?=$val['tasks_count'] ?>
+                                </span>
                             </li>
                             <?php endforeach; ?>
                         </ul>

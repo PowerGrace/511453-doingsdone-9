@@ -1,6 +1,6 @@
 <?php
 
-function numberOfTasks ($tasksList, $projectName) {
+/*function numberOfTasks ($tasksList, $projectName) {
     $quantity = 0;
     foreach ($tasksList as $val) {
         if (isset($val['category']) && ($val['category']) === $projectName) {
@@ -8,7 +8,7 @@ function numberOfTasks ($tasksList, $projectName) {
         }
     }
     return $quantity; 
-};
+};*/
 
 function isDateImportant ($val) {
     $finHour = strtotime($val);
