@@ -1,5 +1,6 @@
 <?php
 require_once ('helpers.php');
+require_once ('functions.php');
 
 $show_complete_tasks = rand(0, 1);
 
@@ -11,55 +12,71 @@ $link = mysqli_connect ('localhost', 'root', '', 'doingsdone');
 
 mysqli_set_charset($link, 'utf8');
 
-$projects = [];
-$tasks = [];
 
 // проверка подключения
 
 if ($link === false) {
     die ('Ошибка подключения:' . mysqli_connect_error());
-} else {
-    // запрос на получение списка проектов для пользователя id = 2
-    $sql_projects = "SELECT title AS category 
-    FROM projects  
-    WHERE projects.id_user = 2";
+}
 
-    // запрос на получение списка задач для пользователя id = 2
+//проекты
 
-    $sql_tasks = "SELECT name AS purpose, deadline AS execution_date, status AS done, title AS category, file
+$projects = [];
+$id_user = 2;
+
+$sql_projects = "SELECT projects.id_name, title AS category, COUNT(tasks.id_name) tasks_count
+    FROM projects
+    JOIN tasks
+    ON tasks.id_name = projects.id_name
+    WHERE projects.id_user = ?
+    GROUP BY projects.id_name";
+
+$values = [$id_user];
+
+$projects = db_fetch_data($link, $sql_projects, $values);
+
+// Обработка параметра из строки запроса
+
+$projectId = null;
+
+if (isset($_GET['id_name']) && $_GET['id_name'] === '') {
+    http_response_code(404);
+    require_once '404.php';
+    exit();
+}
+
+if (isset($_GET['id_name']) && $_GET['id_name'] !== '') {
+    $projectId = intval($_GET['id_name']); // В $_GET всегда содержатся строки, а нам нужно число
+}
+
+//задачи
+
+$tasks = [];
+$id_user = 2;
+
+$sql_tasks = 'SELECT name AS purpose, deadline AS execution_date, status AS done, title AS category, file
     FROM tasks 
     JOIN projects
     ON projects.id_name = tasks.id_name
-    WHERE projects.id_user = 2";
+    WHERE tasks.id_user = ?';
 
-    //получение ресурса результата
+$values = [$id_user];
 
-    $res_projects = mysqli_query($link, $sql_projects);
+if ($projectId !== null) {
+    $sql_tasks .= ' AND tasks.id_name = ?';
+    $values[] = $projectId;
+}
 
-    $res_tasks = mysqli_query($link, $sql_tasks);
+$tasks = db_fetch_data($link, $sql_tasks, $values);
 
-    //проверка запросов
+//Дополнительная логика
 
-    if ($res_projects === false && $res_tasks === false) {
-        die ('Ошибка при выполнении SQL запроса: ' . mysqli_error($link));
-    }
-        
-    $projects = mysqli_fetch_all($res_projects, MYSQLI_ASSOC);
-    
-    $tasks = mysqli_fetch_all($res_tasks, MYSQLI_ASSOC);
-    
+if (empty($tasks)) {
+    require_once '404.php';
+    exit();
+}
 
-};
-
-function numberOfTasks ($tasksList, $projectName) {
-    $quantity = 0;
-    foreach ($tasksList as $val) {
-        if (isset($val['category']) && ($val['category']) === $projectName) {
-            $quantity++;
-        }
-    }
-    return $quantity; 
-};
+// Рендеринг шаблона
 
 $contentOfPage = include_template ('index.php', ['tasks' => $tasks, 'show_complete_tasks' => $show_complete_tasks
     ]);
@@ -70,14 +87,5 @@ $contentLayout = include_template ('layout.php', [
     'userName' => 'Светлана Быстрова',
     'pageName' => 'Дела в Порядке']);
 print($contentLayout);
-
-function isDateImportant ($val) {
-    $finHour = strtotime($val);
-    $hoursCount = $finHour - time();
-        if ($hoursCount <= 86400 && $val !== null) {
-            return true;
-        }
-    return false;
-};
 
 ?>
