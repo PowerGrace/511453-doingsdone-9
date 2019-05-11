@@ -37,7 +37,7 @@
         </td>
 
         <td class="task__file">
-            <a class="download-link" href="#">Файл</a>
+            <a class="download-link" href="<?= '/' . $val['file']?>"><?= $val['file'] ?></a>
         </td>
         <td class="task__date">
             <?php if (isset($val['execution_date'])): ?>

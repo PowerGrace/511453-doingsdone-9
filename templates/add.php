@@ -9,7 +9,7 @@
         <input class="form__input <?= strip_tags($classname);?>" type="text" name="name" id="name"
             value="<?= strip_tags($value); ?>" placeholder="Введите название">
         <?php if (isset($errors['name'])) : ?>
-        <p class='form__message'><?= strip_tags($errors['name'] ?? ''); ?></p>
+        <p class='form__message'><?= strip_tags($errors['name']); ?></p>
         <?php endif ?>
     </div>
 
@@ -19,13 +19,12 @@
         <label class="form__label" for="project">Проект <sup>*</sup></label>
         <select class="form__input form__input--select <?=strip_tags($classname); ?>" name="project" id="project">
             <?php foreach ($projects as $value) : ?>
-            <option value="<?= $value['category'] ?>" <?php if ($task['project'] === $value['category']) : ?> selected
-                <?php endif ?>><?= $value['category']; ?>
+            <option value="<?= $value['id_name'] ?>" selected><?= $value['category']; ?>
             </option>
             <?php endforeach; ?>
         </select>
         <?php if (isset($errors['project'])): ?>
-        <p class="form__message"><?=strip_tags($errors['project'] ?? ''); ?></p>
+        <p class="form__message"><?=strip_tags($errors['project']); ?></p>
         <?php endif; ?>
     </div>
 
@@ -37,7 +36,7 @@
         <input class="form__input form__input--date <?= strip_tags($classname);?>" type="text" name="date" id="date"
             value="<?= strip_tags($task['date']); ?>" placeholder="Введите дату в формате ГГГГ-ММ-ДД">
         <?php if (isset($errors['date'])) : ?>
-        <p class='form__message'><?= strip_tags($errors['date'] ?? ''); ?></p>
+        <p class='form__message'><?= strip_tags($errors['date']); ?></p>
         <?php endif ?>
     </div>
 
