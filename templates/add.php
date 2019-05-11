@@ -49,6 +49,9 @@
             <label class="button button--transparent" for="file">
                 <span>Выберите файл</span>
             </label>
+            <?php if (isset($errors['file'])) : ?>
+            <p class='form__message'><?= strip_tags($errors['file']); ?></p>
+            <?php endif; ?>
         </div>
     </div>
 

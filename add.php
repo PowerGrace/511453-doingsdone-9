@@ -76,19 +76,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
     if ($project_error) {
-        $errors["project"] = "Пожалуйста, укажите тип проекта";
+        $errors['project'] = "Пожалуйста, укажите тип проекта";
     }
 
     //загрузка файла
 
-    if ($_FILES['file']) {
+
+    if (($_FILES['file']['error']) === 0 && ($_FILES['file']['error']) !== 4) {
             $file_name = $_FILES['file']['name'];
             $file_path = __DIR__ . '/uploads/';
             $file_url = '/uploads/' . $file_name;
             move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
-            $file = $file_url;
-        }
 
+            $file = $file_url;
+        }else {
+            $errors['file'] ='Не удалось загрузить файл';
+        }
+    
 
     if (!count($errors)) {
             $sql = 'INSERT INTO tasks(name, dt_creat, status, file, deadline, id_name, id_user)
