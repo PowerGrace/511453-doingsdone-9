@@ -29,4 +29,18 @@ function db_fetch_data($link, $sql, $data = []) {
     }
     return $result;
 }
+//функция добавления записи в БД
+
+function db_insert_data($link, $sql, $data = [])
+{
+    $stmt = db_get_prepare_stmt($link, $sql, $data);
+    mysqli_stmt_execute($stmt);
+    mysqli_stmt_get_result($stmt);
+
+    if (mysqli_errno($link) !== 0) {
+        exit('MySQL Ошибка при сохранении данных: ' . mysqli_error($link));
+    }
+
+    return mysqli_insert_id($link);
+}
 ?>

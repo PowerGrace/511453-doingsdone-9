@@ -37,7 +37,9 @@
         </td>
 
         <td class="task__file">
-            <a class="download-link" href="#">Файл</a>
+            <?php if(!empty($val['file'])): ?>
+            <a class="download-link" href="<?= $val['file'];?>"><?= strip_tags($val['file']); ?></a>
+            <?php endif; ?>
         </td>
         <td class="task__date">
             <?php if (isset($val['execution_date'])): ?>
