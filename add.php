@@ -45,7 +45,7 @@ $errors = [];
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     
-    $required = ['name', 'project', 'date'];
+    $required = ['name', 'project'];
     $dict = ['name' => 'Название задачи', 'project' => 'Название проекта', 'date' => 'Дата выполнения'];
 
     foreach ($required as $key) {
@@ -65,7 +65,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (!is_date_valid($deadline_time)) {
             $errors['date'] = 'Неправильный формат даты';
         }
-    } 
+    } else {
+        $task['date'] = null;
+    }
 
     //проверка указан ли проект
 
@@ -81,15 +83,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     //загрузка файла
 
+    $file = null;
 
-    if (($_FILES['file']['error']) === UPLOAD_ERR_OK && ($_FILES['file']['error']) !== UPLOAD_ERR_NO_FILE) {
+    if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
             $file_name = $_FILES['file']['name'];
             $file_path = __DIR__ . '/uploads/';
             $file_url = '/uploads/' . $file_name;
             move_uploaded_file($_FILES['file']['tmp_name'], $file_path . $file_name);
 
             $file = $file_url;
-        }else {
+        } else if ($_FILES['file']['error'] !== UPLOAD_ERR_NO_FILE){
             $errors['file'] ='Не удалось загрузить файл';
         }
     
