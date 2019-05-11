@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     //загрузка файла
 
 
-    if (($_FILES['file']['error']) === 0 && ($_FILES['file']['error']) !== 4) {
+    if (($_FILES['file']['error']) === UPLOAD_ERR_OK && ($_FILES['file']['error']) !== UPLOAD_ERR_NO_FILE) {
             $file_name = $_FILES['file']['name'];
             $file_path = __DIR__ . '/uploads/';
             $file_url = '/uploads/' . $file_name;

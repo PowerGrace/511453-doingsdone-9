@@ -37,7 +37,7 @@
         </td>
 
         <td class="task__file">
-            <?php if(empty($val['file']) && $val['file'] !== null): ?>
+            <?php if(!empty($val['file'])): ?>
             <a class="download-link" href="<?= '/' . $val['file']?>"><?= strip_tags($val['file']); ?></a>
             <?php endif; ?>
         </td>
