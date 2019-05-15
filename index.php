@@ -54,16 +54,16 @@ if (isset($_GET['id_name']) && $_GET['id_name'] !== '') {
 $tasks = [];
 $id_user = 2;
 
-$sql_tasks = 'SELECT name AS purpose, deadline AS execution_date, status AS done, title AS category, file
+$sql_tasks = "SELECT name AS purpose, deadline AS execution_date, status AS done, title AS category, file
     FROM tasks 
     JOIN projects
     ON projects.id_name = tasks.id_name
-    WHERE tasks.id_user = ?';
+    WHERE tasks.id_user = ?";
 
 $values = [$id_user];
 
 if ($projectId !== null) {
-    $sql_tasks .= ' AND tasks.id_name = ?';
+    $sql_tasks .= " AND tasks.id_name = ?";
     $values[] = $projectId;
 }
 
