@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <title><?= strip_tags($pageName); ?></title>
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/flatpickr.min.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -15,56 +14,72 @@
     <div class="page-wrapper">
         <div class="container container--with-sidebar">
             <header class="main-header">
-                <a href="/">
-                    <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
+                <a href="./index.php">
+                    <img src="../img/logo.png" width="153" height="42" alt="Логитип Дела в порядке">
                 </a>
 
                 <div class="main-header__side">
-                    <a class="main-header__side-item button button--plus open-modal" href="/add.php">Добавить
-                        задачу</a>
-
-                    <div class="main-header__side-item user-menu">
-                        <div class="user-menu__data">
-                            <p><?= strip_tags($userName); ?></p>
-
-                            <a href="../register.php">Выйти</a>
-                        </div>
-                    </div>
+                    <a class="main-header__side-item button button--transparent"
+                        href="form-authorization.html">Войти</a>
                 </div>
             </header>
 
             <div class="content">
                 <section class="content__side">
-                    <h2 class="content__side-heading">Проекты</h2>
-
-                    <nav class="main-navigation">
-                        <ul class="main-navigation__list">
-                            <?php 
-                            foreach ($projects as $val) : ?>
-                            <li class="main-navigation__list-item <?php
-                            if(isset($_GET['id_name']) && $_GET['id_name'] == $val['id_name']): ?>
-                                main-navigation__list-item--active <?php endif ?>">
-                                <a class="main-navigation__list-item-link"
-                                    href="/index.php?id_name=<?= strip_tags($val['id_name'] ?? '')?>"><?= strip_tags($val['category'] ?? ''); ?></a>
-                                <span
-                                    class=" main-navigation__list-item-count"><?=strip_tags($val['tasks_count'] ?? '') ?>
-                                </span>
-                            </li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </nav>
-
-                    <a class="button button--transparent button--plus content__side-button"
-                        href="pages/form-project.html" target="project_add">Добавить проект</a>
+                    <p class="content__side-info">Если у вас уже есть аккаунт, авторизуйтесь на сайте</p>
+                    <a class="button button--transparent content__side-button" href="form-authorization.html">Войти</a>
                 </section>
-
                 <main class="content__main">
-                    <?= $contentOfPage ?>
+                    <h2 class="content__main-heading">Регистрация аккаунта</h2>
+
+                    <form class="form" action="" method="post" autocomplete="off" enctype="multipart/form-data">
+
+                        <div class="form__row">
+                            <label class="form__label" for="email">E-mail <sup>*</sup></label>
+
+                            <input
+                                class="form__input <?php if (isset($errors['email'])): ?> form__input--error <?php endif; ?>"
+                                type="text" name="email" id="email" value="<?= strip_tags($value['email'] ?? ''); ?>"
+                                placeholder="Введите e-mail">
+                            <?php if (isset($errors['email'])) : ?>
+                            <p class="form__message"><?= strip_tags($errors['email'] ?? '') ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="form__row">
+                            <label class="form__label" for="password">Пароль <sup>*</sup></label>
+
+                            <input
+                                class="form__input <?php if(isset($errors['password'])): ?>form__input--error<?php endif; ?> "
+                                type="password" name="password" id="password"
+                                value="<?= strip_tags($value['password'] ?? ''); ?>" placeholder="Введите пароль">
+                            <?php if (isset($errors['password'])) : ?>
+                            <p class="form__message"><?= strip_tags($errors['password'] ?? '') ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="form__row">
+                            <label class="form__label" for="name">Имя <sup>*</sup></label>
+
+                            <input
+                                class="form__input <?php if (isset($errors['name'])): ?> form__input--error<?php endif; ?>"
+                                type="text" name="name" id="name" value="<?= strip_tags($value['name'] ?? '' ); ?>"
+                                placeholder="Введите имя">
+                            <?php if (isset($errors['name'])): ?>
+                            <p class="form__message"><?= strip_tags($errors['name'] ?? ''); ?></p>
+                            <?php endif; ?>
+                        </div>
+                        <div class="form__row form__row--controls">
+                            <?php if ($errors): ?>
+                            <p class="error-message">Пожалуйста, исправьте ошибки в форме</p>
+                            <?php endif; ?>
+                            <input class="button" type="submit" name="" value="Зарегистрироваться">
+                        </div>
+                    </form>
                 </main>
             </div>
         </div>
     </div>
-
     <footer class="main-footer">
         <div class="container">
             <div class="main-footer__copyright">
@@ -72,8 +87,6 @@
 
                 <p>Веб-приложение для удобного ведения списка дел.</p>
             </div>
-
-            <a class="main-footer__button button button--plus" href="/add.php">Добавить задачу</a>
 
             <div class="main-footer__social social">
                 <span class="visually-hidden">Мы в соцсетях:</span>
@@ -118,14 +131,11 @@
                 <span class="visually-hidden">Разработано:</span>
 
                 <a href="https://htmlacademy.ru/intensive/php">
-                    <img src="img/htmlacademy.svg" alt="HTML Academy" width="118" height="40">
+                    <img src="../img/htmlacademy.svg" alt="HTML Academy" width="118" height="40">
                 </a>
             </div>
         </div>
     </footer>
-
-    <script src="flatpickr.js"></script>
-    <script src="script.js"></script>
 </body>
 
 </html>

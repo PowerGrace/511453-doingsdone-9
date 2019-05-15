@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $file = null;
 
-    if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
+    if ($_FILES['file']['error'] === UPLOAD_ERR_OK && !count($errors)) {
             $file_name = $_FILES['file']['name'];
             $file_path = __DIR__ . '/uploads/';
             $file_url = '/uploads/' . $file_name;
@@ -96,7 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors['file'] ='Не удалось загрузить файл';
         }
     
-
+    //запрос на добавление задачи
+    
     if (!count($errors)) {
             $sql = 'INSERT INTO tasks(name, dt_creat, status, file, deadline, id_name, id_user)
                     VALUE(?,NOW(),0,?,?,?,2)';
