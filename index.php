@@ -1,8 +1,10 @@
 <?php
-require_once ('helpers.php');
-require_once ('functions.php');
+require_once('helpers.php');
+require_once('functions.php');
 
 $show_complete_tasks = rand(0, 1);
+
+if (isset($_SESSION) && !empty($_SESSION)) {
 
 // подключение к БД
 
@@ -22,7 +24,7 @@ if ($link === false) {
 //проекты
 
 $projects = [];
-$id_user = 2;
+//$id_user = 2;
 
 $sql_projects = "SELECT projects.id_name, title AS category, COUNT(tasks.id_name) tasks_count
     FROM projects
@@ -84,8 +86,13 @@ $contentLayout = include_template ('layout.php', [
     'contentOfPage' => $contentOfPage, 
     'projects' => $projects,
     'tasks' => $tasks,
-    'userName' => 'Светлана Быстрова',
+    'user' => $_SESSION['user'],
     'pageName' => 'Дела в Порядке']);
+} else {
+    $contentOfPage = include_template ('guest.php', []);
+    $contentLayout = include_template ('layout.php', [
+        'contentOfPage' => $contentOfPage, 
+        'pageName' =>'Добро пожаловать']);
+}
 print($contentLayout);
-
 ?>

@@ -14,18 +14,21 @@
 
     <div class="page-wrapper">
         <div class="container container--with-sidebar">
+
+            <?php if (isset($user)): ?>
+
             <header class="main-header">
                 <a href="/">
                     <img src="img/logo.png" width="153" height="42" alt="Логотип Дела в порядке">
                 </a>
 
                 <div class="main-header__side">
-                    <a class="main-header__side-item button button--plus open-modal" href="/add.php">Добавить
+                    <a class="main-header__side-item button button--plus open-modal" href="add.php">Добавить
                         задачу</a>
 
                     <div class="main-header__side-item user-menu">
                         <div class="user-menu__data">
-                            <p><?= strip_tags($userName); ?></p>
+                            <p><?= strip_tags($user['name_user']); ?></p>
 
                             <a href="../register.php">Выйти</a>
                         </div>
@@ -33,33 +36,56 @@
                 </div>
             </header>
 
+            <?php else : ?>
+            <header class="main-header">
+                <a href="/">
+                    <img src="../img/logo.png" width="153" height="42" alt="Логитип Дела в порядке">
+                </a>
+
+                <div class="main-header__side">
+                    <a class="main-header__side-item button button--transparent" href="../auth.php">Войти</a>
+                </div>
+            </header>
+
+            <?php endif; ?>
+
             <div class="content">
+                <?php if (isset($user)): ?>
                 <section class="content__side">
                     <h2 class="content__side-heading">Проекты</h2>
 
                     <nav class="main-navigation">
                         <ul class="main-navigation__list">
+                            <?php if (isset($projects)) : ?>
                             <?php 
-                            foreach ($projects as $val) : ?>
+                            foreach ($projects as $value) : ?>
                             <li class="main-navigation__list-item <?php
-                            if(isset($_GET['id_name']) && $_GET['id_name'] == $val['id_name']): ?>
+                            if(isset($_GET['id_name']) && $_GET['id_name'] == $value['id_name']): ?>
                                 main-navigation__list-item--active <?php endif ?>">
                                 <a class="main-navigation__list-item-link"
-                                    href="/index.php?id_name=<?= strip_tags($val['id_name'] ?? '')?>"><?= strip_tags($val['category'] ?? ''); ?></a>
+                                    href="/index.php?id_name=<?= strip_tags($value['id_name'] ?? '')?>"><?= strip_tags($value['category'] ?? ''); ?></a>
                                 <span
-                                    class=" main-navigation__list-item-count"><?=strip_tags($val['tasks_count'] ?? '') ?>
+                                    class=" main-navigation__list-item-count"><?=strip_tags($value['tasks_count'] ?? '') ?>
                                 </span>
                             </li>
                             <?php endforeach; ?>
+                            <?php endif; ?>
                         </ul>
                     </nav>
 
                     <a class="button button--transparent button--plus content__side-button"
                         href="pages/form-project.html" target="project_add">Добавить проект</a>
                 </section>
+                <?php else : ?>
+                <section class="content__side">
+                    <p class="content__side-info">Если у вас уже есть аккаунт, авторизуйтесь на сайте</p>
+
+                    <a class="button button--transparent content__side-button" href="auth.php">Войти</a>
+                </section>
+                <?php endif; ?>
 
                 <main class="content__main">
-                    <?= $contentOfPage ?>
+                    <?= $contentOfPage; ?>
                 </main>
             </div>
         </div>

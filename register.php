@@ -22,7 +22,7 @@ if ($link === false) {
     $values = [];
     $form = $values;
     
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $form =  [
         'name'    => $_POST['name'] ?? null,
@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     //запрос на добавление нового пользователя 
 
-    if (!count($errors && strlen($form['password']) > 6)) {
+    if (!count($errors) && strlen($form['password']) > 6) {
         $password = password_hash($form['password'], PASSWORD_DEFAULT);
         $sql = 'INSERT INTO users (name_user, email, password) VALUES (?, ?, ?)';
     
@@ -73,10 +73,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 //подключение шаблона
 
-$contentLayout = include_template ('register.php', [ 
+$contentOfPage = include_template ('register.php', [ 
     'errors' => $errors,
-    'values' => $values,
-   'pageName' => 'Дела в Порядке. Регистрация'
+    'values' => $values
+   
+]);
+$contentLayout = include_template ('layout.php', [
+    'contentOfPage' => $contentOfPage,
+    'pageName' => 'Дела в Порядке. Регистрация'
 ]);
 print($contentLayout);
 
